@@ -61,7 +61,7 @@ module.exports = class CoreCoupler {
 
   _hasPeer (core, peer) { // TODO: make proper
     const ch = peer.protomux.getLastChannel({ protocol: 'hypercore', id: core.discoveryKey })
-    if (ch) return ch.fullyOpen()
+    if (ch) return ch.fullyOpened()
     return Promise.resolve(false)
   }
 }
