@@ -59,11 +59,9 @@ module.exports = class CoreCoupler {
     }
   }
 
-  async _hasPeer (core, peer) { // TODO: make proper
-    const id = 'hypercore##' + core.discoveryKey.toString('hex')
-    await new Promise(resolve => setTimeout(resolve, 300))
-
-    const info = peer.protomux._infos.get(id)
-    return !!info
+  _hasPeer (core, peer) { // TODO: make proper
+    const ch = peer.protomux.getLastChannel({ protocol: 'hypercore', id: core.discoveryKey })
+    if (ch) return ch.fullyOpen()
+    return Promise.resolve(false)
   }
 }
