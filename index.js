@@ -11,8 +11,9 @@ module.exports = class CoreCoupler {
   }
 
   add (core) {
+    const added = this.coupled.size
     this.coupled.add(core)
-    this._couple(core)
+    if (added !== this.coupled.size) this._couple(core)
   }
 
   remove (core) {
