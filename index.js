@@ -24,6 +24,29 @@ module.exports = class CoreCoupler {
     this.target.off('peer-add', this._onpeeraddBound)
   }
 
+  async update (stream) {
+    const muxer = stream.userData
+    if (!muxer) return
+
+    try {
+      if (!(await this._hasMuxer(this.target, muxer))) return
+
+      let wakeup = null
+
+      for (const core of this.coupled) {
+        if (await this._hasMuxer(core, muxer)) continue
+        if (wakeup === null) wakeup = []
+        wakeup.push(core)
+      }
+
+      if (wakeup !== null) {
+        this.wakeup(stream, wakeup)
+      }
+    } catch (err) {
+      safetyCatch(err)
+    }
+  }
+
   async _couple (core) {
     try {
       let wakeup = null
@@ -35,7 +58,7 @@ module.exports = class CoreCoupler {
       }
 
       if (wakeup !== null && this.coupled.has(core)) {
-        for (const peer of wakeup) this.wakeup(peer, [core])
+        for (const peer of wakeup) this.wakeup(peer.stream, [core])
       }
     } catch (err) {
       safetyCatch(err)
@@ -60,9 +83,13 @@ module.exports = class CoreCoupler {
     }
   }
 
-  _hasPeer (core, peer) { // TODO: make proper
-    const ch = peer.protomux.getLastChannel({ protocol: 'hypercore', id: core.discoveryKey })
+  _hasMuxer (core, muxer) {
+    const ch = muxer.getLastChannel({ protocol: 'hypercore', id: core.discoveryKey })
     if (ch) return ch.fullyOpened()
     return Promise.resolve(false)
+  }
+
+  _hasPeer (core, peer) {
+    return this._hasMuxer(core, peer.protomux)
   }
 }
