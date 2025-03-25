@@ -76,7 +76,7 @@ module.exports = class CoreCoupler {
       }
 
       if (wakeup !== null) {
-        this.wakeup(peer, wakeup)
+        this.wakeup(peer.stream, wakeup)
       }
     } catch (err) {
       safetyCatch(err)
@@ -86,6 +86,10 @@ module.exports = class CoreCoupler {
   _hasMuxer (core, muxer) {
     const ch = muxer.getLastChannel({ protocol: 'hypercore', id: core.discoveryKey })
     if (ch) return ch.fullyOpened()
+
+    const cha = muxer.getLastChannel({ protocol: 'hypercore/alpha', id: core.discoveryKey })
+    if (cha) return cha.fullyOpened()
+
     return Promise.resolve(false)
   }
 
