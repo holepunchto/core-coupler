@@ -1,6 +1,6 @@
 # core-coupler
 
-Couple the peers of cores. Useful for coordinating cores which are loosely connect.
+Couple the peers of cores. Useful for coordinating cores which are loosely connected.
 
 ```
 npm install core-coupler
