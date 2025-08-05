@@ -1,0 +1,25 @@
+const test = require('brittle')
+const { replicate, createStore } = require('./helpers')
+const CoreCoupler = require('../')
+
+test('basic - wakes up when peer has core', async (t) => {
+  t.plan(2)
+  const store1 = await createStore(t)
+  const store2 = await createStore(t)
+
+  const target = store1.get({ name: 'target' })
+  const other = store1.get({ name: 'other' })
+
+  await target.ready()
+  await other.ready()
+
+  store2.get(target.key)
+
+  replicate(store1, store2, t)
+
+  const a = new CoreCoupler(target, function (stream, cores) {
+    t.is(cores.length, 1, 'woke up with 1 core')
+    t.is(other.key, cores[0].key, 'a woke up from other\'s key')
+  })
+  a.add(other)
+})
