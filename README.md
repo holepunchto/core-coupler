@@ -48,7 +48,7 @@ Destroy the coupler removing the `peer-add` event from the `target` core.
 
 #### `await coupler.update(stream)`
 
-Update a peer via it's `stream` ensuring all coupled cores will call `wakeup` if available from the peer.
+Update a peer via it's `stream` ensuring all coupled cores will call `wakeup` if unavailable from the peer.
 
 ## License
 
