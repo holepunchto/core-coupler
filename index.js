@@ -1,7 +1,7 @@
 const safetyCatch = require('safety-catch')
 
 module.exports = class CoreCoupler {
-  constructor (target, wakeup) {
+  constructor(target, wakeup) {
     this.target = target
     this.wakeup = wakeup
     this.coupled = new Set()
@@ -10,21 +10,21 @@ module.exports = class CoreCoupler {
     this.target.on('peer-add', this._onpeeraddBound)
   }
 
-  add (core) {
+  add(core) {
     const added = this.coupled.size
     this.coupled.add(core)
     if (added !== this.coupled.size) this._couple(core)
   }
 
-  remove (core) {
+  remove(core) {
     this.coupled.delete(core)
   }
 
-  destroy () {
+  destroy() {
     this.target.off('peer-add', this._onpeeraddBound)
   }
 
-  async update (stream) {
+  async update(stream) {
     const muxer = stream.userData
     if (!muxer) return
 
@@ -47,7 +47,7 @@ module.exports = class CoreCoupler {
     }
   }
 
-  async _couple (core) {
+  async _couple(core) {
     try {
       let wakeup = null
 
@@ -65,7 +65,7 @@ module.exports = class CoreCoupler {
     }
   }
 
-  async _onpeeradd (peer) {
+  async _onpeeradd(peer) {
     try {
       let wakeup = null
 
@@ -83,7 +83,7 @@ module.exports = class CoreCoupler {
     }
   }
 
-  _hasMuxer (core, muxer) {
+  _hasMuxer(core, muxer) {
     const ch = muxer.getLastChannel({ protocol: 'hypercore', id: core.discoveryKey })
     if (ch) return ch.fullyOpened()
 
@@ -93,7 +93,7 @@ module.exports = class CoreCoupler {
     return Promise.resolve(false)
   }
 
-  _hasPeer (core, peer) {
+  _hasPeer(core, peer) {
     return this._hasMuxer(core, peer.protomux)
   }
 }

@@ -19,7 +19,7 @@ test('basic - wakes up when peer has core', async (t) => {
 
   const a = new CoreCoupler(target, function (stream, cores) {
     t.is(cores.length, 1, 'woke up with 1 core')
-    t.is(other.key, cores[0].key, 'a woke up from other\'s key')
+    t.is(other.key, cores[0].key, "a woke up from other's key")
   })
   a.add(other)
 })
@@ -65,7 +65,7 @@ test('basic - update - wakeup refires if no channel on peer', async (t) => {
   replicate(store1, store2, t)
 
   const coupler = new CoreCoupler(target, function (stream, cores) {
-    t.is(other.key, cores[0].key, 'a woke up from other\'s key')
+    t.is(other.key, cores[0].key, "a woke up from other's key")
   })
   coupler.add(other)
 

@@ -4,7 +4,9 @@
   "description": "Couple the peers of cores",
   "main": "index.js",
   "scripts": {
-    "test": "standard && brittle test/*.js"
+    "format": "prettier . --write",
+    "test": "prettier . --check && brittle test/*.js",
+    "lint": "prettier . --check && lunte"
   },
   "dependencies": {
     "safety-catch": "^1.0.2"
@@ -12,7 +14,9 @@
   "devDependencies": {
     "brittle": "^3.17.1",
     "corestore": "^6.18.2",
-    "standard": "^17.1.0"
+    "lunte": "^1.8.0",
+    "prettier": "^3.8.3",
+    "prettier-config-holepunch": "^2.0.0"
   },
   "repository": {
     "type": "git",
