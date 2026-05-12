@@ -16,18 +16,18 @@ exports.createStore = async function (t, opts = {}) {
 //   return core
 // }
 
-exports.replicate = function replicate (a, b, t, opts = {}) {
+exports.replicate = function replicate(a, b, t, opts = {}) {
   const s1 = a.replicate(true, { keepAlive: false, ...opts })
   const s2 = b.replicate(false, { keepAlive: false, ...opts })
 
-  const closed1 = new Promise(resolve => s1.once('close', resolve))
-  const closed2 = new Promise(resolve => s2.once('close', resolve))
+  const closed1 = new Promise((resolve) => s1.once('close', resolve))
+  const closed2 = new Promise((resolve) => s2.once('close', resolve))
 
-  s1.on('error', err => {
+  s1.on('error', (err) => {
     safetyCatch(err)
     t.comment(`replication stream error (initiator): ${err}`)
   })
-  s2.on('error', err => {
+  s2.on('error', (err) => {
     safetyCatch(err)
     t.comment(`replication stream error (responder): ${err}`)
   })

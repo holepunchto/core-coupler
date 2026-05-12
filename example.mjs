@@ -17,7 +17,7 @@ const s2 = store2.replicate(false)
 
 s1.pipe(s2).pipe(s1)
 
-await new Promise(resolve => setTimeout(resolve, 200))
+await new Promise((resolve) => setTimeout(resolve, 200))
 
 const a = new CoreCoupler(target, function (stream, cores) {
   console.log('a: should wakeup', cores.length)

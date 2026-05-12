@@ -8,7 +8,7 @@ npm install core-coupler
 
 ## Usage
 
-``` js
+```js
 const CoreCoupler = require('core-coupler')
 
 const store = new Corestore('./store')
