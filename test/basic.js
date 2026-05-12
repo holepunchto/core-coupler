@@ -1,4 +1,5 @@
 const test = require('brittle')
+const { once } = require('events')
 const { replicate, createStore } = require('./helpers')
 const CoreCoupler = require('../')
 
@@ -62,6 +63,7 @@ test('basic - update - wakeup refires if no channel on peer', async (t) => {
 
   store2.get(target.key)
 
+  const hasPeer = once(target, 'peer-add')
   replicate(store1, store2, t)
 
   const coupler = new CoreCoupler(target, function (stream, cores) {
@@ -69,7 +71,7 @@ test('basic - update - wakeup refires if no channel on peer', async (t) => {
   })
   coupler.add(other)
 
-  await new Promise((resolve) => setTimeout(resolve, 10))
+  await hasPeer
 
   const stream = target.peers[0].stream
   await coupler.update(stream)
